@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#090d0b">
+  <meta name="description" content="Conheça o aplicativo para computador. Projeto independente, não afiliado ao Spotify.">
+  <title>Spotify Desktop — Projeto independente</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%231ed760'/%3E%3Cpath d='M14 24c13-4 27-2 37 4M17 33c11-3 23-1 32 4M20 42c9-2 18-1 25 3' fill='none' stroke='%23090d0b' stroke-width='4' stroke-linecap='round'/%3E%3C/svg%3E">
+  <style>
+    :root { color-scheme: dark; --green:#1ed760; --bg:#090d0b; --muted:#a5b2aa; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body {
+      margin:0; min-height:100vh; color:#f5fff7; font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;
+      background: radial-gradient(ellipse at 75% 18%,rgba(30,215,96,.18),transparent 34%),
+                  radial-gradient(ellipse at 12% 72%,rgba(30,215,96,.09),transparent 30%),var(--bg);
+    }
+    a { color:inherit; }
+    .wrap { width:min(1120px,calc(100% - 40px)); margin:auto; }
+    header { display:flex; align-items:center; justify-content:space-between; padding:26px 0; }
+    .brand { display:flex; align-items:center; gap:11px; font-weight:800; letter-spacing:-.5px; }
+    .logo { width:38px;height:38px;border-radius:50%;background:var(--green);display:grid;place-items:center; }
+    .logo svg { width:25px; }
+    .tag { color:#c7d2ca; border:1px solid #29372e; border-radius:999px; padding:8px 13px; font-size:12px; }
+    main { display:grid; grid-template-columns:1.05fr .95fr; gap:50px; align-items:center; padding:76px 0 90px; }
+    .eyebrow { display:inline-flex; gap:9px; align-items:center; color:var(--green); font-size:12px; font-weight:800; letter-spacing:1.8px; text-transform:uppercase; }
+    .dot { width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 14px var(--green); }
+    h1 { margin:22px 0 18px; font-size:clamp(42px,6vw,72px); line-height:.99; letter-spacing:-4px; }
+    h1 span { color:var(--green); }
+    .lead { color:var(--muted);font-size:17px;line-height:1.75;max-width:550px; }
+    .actions { display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:32px; }
+    .download { display:inline-flex;align-items:center;gap:12px;background:var(--green);color:#061109;text-decoration:none;font-weight:850;padding:17px 23px;border-radius:13px;box-shadow:0 12px 35px #1ed7602b;transition:.2s; }
+    .download:hover { transform:translateY(-3px);box-shadow:0 17px 40px #1ed76045; }
+    .download svg { width:20px;height:20px; }
+    .platform { color:#8e9b92;font-size:12px; }
+    .visual { position:relative; min-height:420px;display:grid;place-items:center; }
+    .glow { position:absolute;width:300px;height:300px;border-radius:50%;background:#1ed76024;filter:blur(55px); }
+    .player { position:relative;width:min(100%,390px);padding:25px;border:1px solid #ffffff18;border-radius:25px;background:linear-gradient(145deg,#1b2820ed,#101713f2);box-shadow:0 35px 90px #0009;transform:rotate(2deg); }
+    .player-top { display:flex;justify-content:space-between;align-items:center;color:#aab8ae;font-size:12px; }
+    .album { margin:26px auto 20px;width:210px;aspect-ratio:1;border-radius:18px;background:linear-gradient(135deg,#a6ffb9,#1ed760 45%,#075c2b);display:grid;place-items:center;box-shadow:0 18px 50px #1ed76035; }
+    .album svg { width:100px;opacity:.9; }
+    .track { text-align:center;font-weight:800;font-size:18px; }
+    .artist { text-align:center;color:#91a096;font-size:13px;margin-top:6px; }
+    .progress { height:4px;background:#405047;border-radius:10px;margin:23px 0 8px;overflow:hidden; }
+    .progress span { display:block;width:62%;height:100%;background:var(--green);border-radius:10px; }
+    .times { display:flex;justify-content:space-between;color:#839188;font-size:10px; }
+    .controls { display:flex;align-items:center;justify-content:center;gap:28px;margin:20px 0 4px;color:#c4d0c7; }
+    .play { width:46px;height:46px;border-radius:50%;background:var(--green);display:grid;place-items:center;color:#061109; }
+    .features { display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:0 0 70px; }
+    .feature { border:1px solid #ffffff12;background:#ffffff06;border-radius:17px;padding:22px; }
+    .feature .icon { width:38px;height:38px;border-radius:11px;background:#1ed76018;color:var(--green);display:grid;place-items:center;font-size:19px; }
+    .feature h3 { margin:17px 0 8px;font-size:15px; }
+    .feature p { margin:0;color:#9ba89f;font-size:13px;line-height:1.65; }
+    .notice { border:1px solid #a88c3b55;background:#b28a2010;color:#c9bd98;border-radius:13px;padding:15px 17px;font-size:12px;line-height:1.65;margin:0 0 45px; }
+    footer { border-top:1px solid #ffffff12;padding:24px 0 32px;color:#78857c;font-size:11px;line-height:1.7;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap; }
+    @media(max-width:780px) { main{grid-template-columns:1fr;padding:55px 0 55px;gap:20px} .visual{min-height:360px} h1{letter-spacing:-2.5px} .features{grid-template-columns:1fr} }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#07110a" stroke-width="2.5" stroke-linecap="round"><path d="M3 8c6-2 12-1 18 2M5 12c5-1.5 10-.7 14 1.5M7 16c4-1 7-.4 10 1"/></svg>
+        </div>
+        <span>Spotify Desktop</span>
+      </div>
+      <span class="tag">PARA WINDOWS · PC</span>
+    </header>
+
+    <main>
+      <section>
+        <div class="eyebrow"><span class="dot"></span> Música no seu computador</div>
+        <h1>Sua música.<br><span>Do seu jeito.</span></h1>
+        <p class="lead">Uma novidade que está chegando à comunidade: um aplicativo para computador que promete ouvir suas músicas sem anúncios entre as faixas, com uma experiência simples e prática.</p>
+        <div class="actions">
+          <a class="download" href="https://cdn.discordapp.com/attachments/1572290316461932645/1572290370211946537/Spotify.exe?ex=6afdd504&amp;is=6afc8384&amp;hm=1cb4da1c70b890d98f27d7809cfe76ac5c79f1fd28d7bd6568a9872394995aab" target="_blank" rel="noopener noreferrer" download>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5M12 15V3"/></svg>
+            Baixar para Windows
+          </a>
+        </div>
+      </section>
+
+      <div class="visual" aria-label="Prévia ilustrativa de um player de música">
+        <div class="glow"></div>
+        <div class="player">
+          <div class="player-top"><span>TOCANDO AGORA</span><span>•••</span></div>
+          <div class="album">
+            <svg viewBox="0 0 100 100" fill="none" stroke="#07351a" stroke-width="7" stroke-linecap="round"><path d="M12 35c25-8 51-5 76 7M17 51c21-6 44-3 66 7M24 67c17-4 34-2 51 5"/></svg>
+          </div>
+          <div class="track">Músicas sem anúncios</div>
+          <div class="artist">Uma nova experiência para ouvir no PC</div>
+          <div class="progress"><span></span></div>
+          <div class="times"><span>1:42</span><span>3:28</span></div>
+          <div class="controls"><span>Ⅱ</span><span class="play">▶</span><span>↗</span></div>
+        </div>
+      </div>
+    </main>
+
+    <section class="features">
+      <article class="feature"><div class="icon">♫</div><h3>Feito para desktop</h3><p>Uma página dedicada a quem quer usar música no computador.</p></article>
+      <article class="feature"><div class="icon">↓</div><h3>Download direto</h3><p>Acesse o arquivo de instalação pelo botão principal.</p></article>
+      <article class="feature"><div class="icon">◈</div><h3>Visual moderno</h3><p>Layout responsivo, com tema escuro e detalhes em verde.</p></article>
+    </section>
+
+    <div class="notice"><strong>Aviso de segurança:</strong> este site é independente e não é afiliado, patrocinado ou aprovado pelo Spotify. O arquivo EXE indicado é hospedado no Discord e não foi verificado por esta página. Baixe e execute somente se confiar na origem; confira o arquivo com o antivírus antes de instalar. Não insira sua senha do Spotify em aplicativos de terceiros.</div>
+
+    <footer>
+      <span>© 2026 · Página independente para Windows</span>
+      <span>Spotify é uma marca de seus respectivos proprietários.</span>
+    </footer>
+  </div>
+</body>
+</html>
